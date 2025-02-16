@@ -1,9 +1,11 @@
 package com.example.aula2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 public class Category {
 
     @Id
@@ -21,23 +24,7 @@ public class Category {
 
     private String name;
 
-    @ManyToMany
-    @JoinTable(
-            name = "tb_product_category",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "category_id")
-    )
+    @ManyToMany(mappedBy = "categories")
+    @JsonIgnoreProperties(value = "categories")
     private List<Product> products = new ArrayList<>();
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
 }
